@@ -1,0 +1,109 @@
+<UserControl x:Class="TaskList.Controls.TaskCard"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:TaskList.Controls"
+             xmlns:models="clr-namespace:TaskList.Models"
+             mc:Ignorable="d" 
+             d:DesignHeight="80" d:DesignWidth="230">
+
+    <UserControl.Resources>
+        <Style x:Key="PriorityIndicator" TargetType="Border">
+            <Setter Property="Width" Value="4"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="CornerRadius" Value="2"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="0,0,8,0"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Priority}" Value="{x:Static models:TaskPriority.Low}">
+                    <Setter Property="Background" Value="#43B581"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Priority}" Value="{x:Static models:TaskPriority.Normal}">
+                    <Setter Property="Background" Value="#FAA61A"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Priority}" Value="{x:Static models:TaskPriority.High}">
+                    <Setter Property="Background" Value="#F04747"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Priority}" Value="{x:Static models:TaskPriority.Urgent}">
+                    <Setter Property="Background" Value="#FF0000"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="StatusIndicator" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Status}" Value="{x:Static models:TodoTaskStatus.NotStarted}">
+                    <Setter Property="Foreground" Value="#72767D"/>
+                    <Setter Property="Text" Value="Not Started"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Status}" Value="{x:Static models:TodoTaskStatus.InProgress}">
+                    <Setter Property="Foreground" Value="#FAA61A"/>
+                    <Setter Property="Text" Value="In Progress"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Status}" Value="{x:Static models:TodoTaskStatus.Completed}">
+                    <Setter Property="Foreground" Value="#43B581"/>
+                    <Setter Property="Text" Value="Completed"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Status}" Value="{x:Static models:TodoTaskStatus.OnHold}">
+                    <Setter Property="Foreground" Value="#F04747"/>
+                    <Setter Property="Text" Value="On Hold"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
+    
+    <Border Background="{StaticResource SecondaryBackgroundBrush}"
+            BorderBrush="{StaticResource BorderBrush}"
+            BorderThickness="1"
+            CornerRadius="4"
+            Margin="0,0,0,5"
+            Padding="10">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Border Style="{StaticResource PriorityIndicator}"/>
+
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Text="{Binding Name}"
+                          Grid.Row="0"
+                          FontWeight="SemiBold"
+                          Foreground="{StaticResource TextPrimaryBrush}"
+                          TextTrimming="CharacterEllipsis"/>
+
+                <Grid Grid.Row="1" Margin="0,5,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Text="{Binding DueDate, StringFormat={}{0:MMM dd}}"
+                              Grid.Column="0"
+                              Foreground="{StaticResource TextSecondaryBrush}"
+                              FontSize="12"/>
+                    
+                    <TextBlock Text=" • "
+                              Grid.Column="1"
+                              Foreground="{StaticResource TextSecondaryBrush}"
+                              FontSize="12"
+                              Margin="5,0"/>
+                    
+                    <TextBlock Grid.Column="2"
+                              Style="{StaticResource StatusIndicator}"/>
+                </Grid>
+            </Grid>
+        </Grid>
+    </Border>
+</UserControl>
